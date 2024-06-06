@@ -519,6 +519,8 @@ const resizer = {
 						resizer.startPos = rotateXY(cx, cy, resizer.startPos.x, resizer.startPos.y, target.angle);
 					}
 					if (target.angle && !target.options.resizeFromCenter) {
+						let left = target.size.left;
+						let top = target.size.top;
 						let coord = getCoordinates(target.size, target.angle);
 						target.coord = coord;
 						switch (resizer.current.actionName) {
@@ -528,35 +530,39 @@ const resizer = {
 								// toFixPos = 'TopLeft';
 								resizer.style.transformOrigin = 'top left';
 								target.style.transformOrigin = 'top left';
-								target.style.left = coord.ax + 'px';
-								target.style.top = coord.ay + 'px';
+								left = coord.ax;
+								top = coord.ay;
 								break;
 							case 'sw-resizer':
 							case 'w-resizer':
 								// toFixPos = 'TopRight';
 								resizer.style.transformOrigin = 'top right';
 								target.style.transformOrigin = 'top right';
-								target.style.left = coord.bx - target.size.width + 'px';
-								target.style.top = coord.by + 'px';
+								left = coord.bx - target.size.width;
+								top = coord.by;
 								break;
 							case 'ne-resizer':
 								// toFixPos = 'BottomLeft';
 								resizer.style.transformOrigin = 'bottom left';
 								target.style.transformOrigin = 'bottom left';
-								target.style.left = coord.dx + 'px';
-								target.style.top = coord.dy - target.size.height + 'px';
+								left = coord.dx;
+								top = coord.dy - target.size.height;
 								break;
 							case 'nw-resizer':
 							case 'n-resizer':
 								// toFixPos = 'BottomRight';
 								resizer.style.transformOrigin = 'bottom right';
 								target.style.transformOrigin = 'bottom right';
-								target.style.left = coord.cx - target.size.width + 'px';
-								target.style.top = coord.cy - target.size.height + 'px';
+								left = coord.cx - target.size.width;
+								top = coord.cy - target.size.height;
 								break;
 							default:
 								break;
 						}
+						target.style.left = left + 'px';
+						target.style.top = top + 'px';
+						target.prevSize.left = left;
+						target.prevSize.top = top;
 					}
 					this.show(target);
 					let handleClick = (e) => {
